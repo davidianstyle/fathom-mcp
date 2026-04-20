@@ -31,10 +31,10 @@ export function registerTeamsTools(
       cursor: z.string().optional().describe("Pagination cursor"),
     },
     async ({ team, cursor }) => {
-      const params: Record<string, string | undefined> = {};
+      const params: Record<string, string | undefined> = { team };
       if (cursor) params.cursor = cursor;
 
-      const res = await fathomFetch(ctx, `/teams/${team}/members`, { params });
+      const res = await fathomFetch(ctx, "/team_members", { params });
       return textResult(res);
     }
   );

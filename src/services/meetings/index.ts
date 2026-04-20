@@ -38,7 +38,7 @@ export function registerMeetingsTools(
       if (params.include_crm_matches) queryParams.include_crm_matches = "true";
       if (params.cursor) queryParams.cursor = params.cursor;
 
-      const res = await fathomFetch(ctx, "/recordings", { params: queryParams });
+      const res = await fathomFetch(ctx, "/meetings", { params: queryParams });
       return textResult(res);
     }
   );
@@ -60,7 +60,7 @@ export function registerMeetingsTools(
       if (teams) params["teams[]"] = teams;
       if (limit) params.limit = String(limit);
 
-      const res = await fathomFetch(ctx, "/recordings/search", { params });
+      const res = await fathomFetch(ctx, "/meetings", { params });
       return textResult(res);
     }
   );
@@ -103,7 +103,7 @@ export function registerMeetingsTools(
       if (created_before) params.created_before = created_before;
       if (teams) params["teams[]"] = teams;
 
-      const res = await fathomFetch(ctx, "/recordings/stats", { params });
+      const res = await fathomFetch(ctx, "/meetings", { params });
       return textResult(res);
     }
   );
@@ -122,7 +122,7 @@ export function registerMeetingsTools(
       if (created_before) params.created_before = created_before;
       if (limit) params.limit = String(limit);
 
-      const res = await fathomFetch(ctx, "/recordings/stats/participants", { params });
+      const res = await fathomFetch(ctx, "/meetings", { params });
       return textResult(res);
     }
   );

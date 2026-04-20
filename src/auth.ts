@@ -1,6 +1,6 @@
 import { ServiceContext } from "./types.js";
 
-const FATHOM_BASE_URL = "https://api.fathom.video/v2";
+const FATHOM_BASE_URL = "https://api.fathom.ai/external/v1";
 
 export function loadAuth(): ServiceContext {
   const apiKey = process.env.FATHOM_API_KEY;
