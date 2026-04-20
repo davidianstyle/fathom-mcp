@@ -5,7 +5,8 @@ export async function fathomFetch(
   path: string,
   opts: { method?: string; body?: unknown; params?: Record<string, string | string[] | undefined> } = {}
 ): Promise<unknown> {
-  const url = new URL(path, ctx.baseUrl);
+  const base = ctx.baseUrl.endsWith("/") ? ctx.baseUrl : ctx.baseUrl + "/";
+  const url = new URL(path.startsWith("/") ? path.slice(1) : path, base);
 
   if (opts.params) {
     for (const [key, val] of Object.entries(opts.params)) {
@@ -19,7 +20,7 @@ export async function fathomFetch(
   }
 
   const headers: Record<string, string> = {
-    Authorization: `Bearer ${ctx.apiKey}`,
+    "X-Api-Key": ctx.apiKey,
     Accept: "application/json",
   };
 
