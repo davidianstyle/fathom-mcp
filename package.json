@@ -1,0 +1,29 @@
+{
+  "name": "fathom-mcp",
+  "version": "0.1.0",
+  "description": "Fathom.video MCP server for Claude Code — meetings, transcripts, summaries, and webhooks via API key.",
+  "type": "module",
+  "bin": {
+    "fathom-mcp": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": ["mcp", "fathom", "meetings", "transcripts"],
+  "author": "David Chang",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "commander": "^14.0.3",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.4"
+  }
+}
