@@ -20,6 +20,7 @@ function rawMeeting(overrides: Record<string, unknown> = {}) {
     action_items: [{ description: "Follow up with legal", completed: false }],
     transcript: [{ speaker: "Ada Lovelace", text: "Let's get started.", timestamp: "00:00:01" }],
     default_summary: { markdown_formatted: "## Summary\n- Discussed roadmap" },
+    crm_matches: { contacts: [{ name: "Ada Lovelace", crm_id: "003xx0001" }] },
     ...overrides,
   };
 }
@@ -54,6 +55,7 @@ describe("pruneMeetingListResponse", () => {
     expect(item.action_items).toBeUndefined();
     expect(item.transcript).toBeUndefined();
     expect(item.default_summary).toBeUndefined();
+    expect(item.crm_matches).toBeUndefined();
     expect(item.scheduled_start_time).toBeUndefined();
     expect(item.recording_start_time).toBeUndefined();
   });
@@ -105,18 +107,35 @@ describe("pruneMeetingListResponse", () => {
     expect(pruned.items[0].transcript).toBeUndefined();
   });
 
-  it("includes all three when all three flags are requested", () => {
+  it("includes crm_matches only when includeCrmMatches is requested", () => {
+    const response = { ...baseResponse, items: [rawMeeting()] };
+
+    const pruned = pruneMeetingListResponse(response, { includeCrmMatches: true }) as {
+      items: Array<Record<string, unknown>>;
+    };
+
+    expect(pruned.items[0].crm_matches).toEqual({
+      contacts: [{ name: "Ada Lovelace", crm_id: "003xx0001" }],
+    });
+    expect(pruned.items[0].action_items).toBeUndefined();
+    expect(pruned.items[0].transcript).toBeUndefined();
+    expect(pruned.items[0].default_summary).toBeUndefined();
+  });
+
+  it("includes all four when all four flags are requested", () => {
     const response = { ...baseResponse, items: [rawMeeting()] };
 
     const pruned = pruneMeetingListResponse(response, {
       includeActionItems: true,
       includeTranscript: true,
       includeSummary: true,
+      includeCrmMatches: true,
     }) as { items: Array<Record<string, unknown>> };
 
     expect(pruned.items[0].action_items).toBeDefined();
     expect(pruned.items[0].transcript).toBeDefined();
     expect(pruned.items[0].default_summary).toBeDefined();
+    expect(pruned.items[0].crm_matches).toBeDefined();
   });
 
   it("returns the response untouched when items is missing or malformed", () => {

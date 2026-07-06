@@ -50,6 +50,7 @@ export function registerMeetingsTools(
         includeActionItems: params.include_action_items,
         includeTranscript: params.include_transcript,
         includeSummary: params.include_summary,
+        includeCrmMatches: params.include_crm_matches,
       });
       return textResult(pruned);
     }

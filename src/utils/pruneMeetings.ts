@@ -2,13 +2,14 @@ export interface PruneMeetingListFlags {
   includeActionItems?: boolean;
   includeTranscript?: boolean;
   includeSummary?: boolean;
+  includeCrmMatches?: boolean;
 }
 
 /**
  * Prunes a `/meetings` list response down to the essentials for each item —
  * title, recording id, created_at, url, meeting type, and invitee
- * names/emails — including action items, transcript, and the AI summary
- * only when their corresponding include flag was requested.
+ * names/emails — including action items, transcript, the AI summary, and
+ * CRM matches only when their corresponding include flag was requested.
  *
  * Any input that doesn't look like a meeting list response (missing/invalid
  * `items`) is returned untouched.
@@ -41,6 +42,7 @@ function pruneMeetingItem(item: unknown, flags: PruneMeetingListFlags): unknown 
   if (flags.includeActionItems) pruned.action_items = item.action_items;
   if (flags.includeTranscript) pruned.transcript = item.transcript;
   if (flags.includeSummary) pruned.default_summary = item.default_summary;
+  if (flags.includeCrmMatches) pruned.crm_matches = item.crm_matches;
 
   return pruned;
 }
