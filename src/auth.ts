@@ -7,7 +7,7 @@ export function loadAuth(): ServiceContext {
 
   if (!apiKey) {
     throw new Error(
-      "Environment variable FATHOM_API_KEY not set.\nSet it in ~/.config/openbrain/.env or export it before running."
+      "FATHOM_API_KEY environment variable is not set. Set it in the environment before running fathom-mcp."
     );
   }
 

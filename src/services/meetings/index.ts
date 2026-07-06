@@ -3,6 +3,7 @@ import { z } from "zod";
 import { ServiceContext } from "../../types.js";
 import { textResult } from "../../utils/formatting.js";
 import { fathomFetch } from "../../utils/api.js";
+import { pruneMeetingListResponse } from "../../utils/pruneMeetings.js";
 
 export function registerMeetingsTools(
   server: McpServer,
@@ -23,6 +24,7 @@ export function registerMeetingsTools(
       include_action_items: z.boolean().optional().describe("Include action items in response"),
       include_crm_matches: z.boolean().optional().describe("Include CRM matches in response"),
       cursor: z.string().optional().describe("Pagination cursor"),
+      include_raw: z.boolean().optional().describe("Return the full, unpruned API response instead of the compact default"),
     },
     async (params) => {
       const queryParams: Record<string, string | string[] | undefined> = {};
@@ -39,7 +41,17 @@ export function registerMeetingsTools(
       if (params.cursor) queryParams.cursor = params.cursor;
 
       const res = await fathomFetch(ctx, "/meetings", { params: queryParams });
-      return textResult(res);
+
+      if (params.include_raw) {
+        return textResult(res);
+      }
+
+      const pruned = pruneMeetingListResponse(res, {
+        includeActionItems: params.include_action_items,
+        includeTranscript: params.include_transcript,
+        includeSummary: params.include_summary,
+      });
+      return textResult(pruned);
     }
   );
 
